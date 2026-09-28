@@ -1,4 +1,5 @@
 import {
+  BadGatewayException,
   Body,
   Controller,
   Get,
@@ -33,7 +34,7 @@ export class PaymentsController {
   @ApiOperation({
     summary: "Check sandbox credentials",
     description:
-      "Requests an iPOSpays auth token with the configured API key and secret. The token is not returned.",
+      "Issues an iPOSpays token, then calls payment status. A token with responseCode 00 is not enough: the merchant must be registered for PaymentTokenization. The token is not returned.",
   })
   @ApiOkAndError(
     IposConnectionDto,
@@ -43,6 +44,9 @@ export class PaymentsController {
   )
   async connection() {
     const data = await this.payments.connection();
+    if (!data.authenticated) {
+      throw new BadGatewayException(data.responseMessage);
+    }
     return ApiResponse.success(data, "Sandbox credentials accepted");
   }
 

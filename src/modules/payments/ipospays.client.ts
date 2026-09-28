@@ -8,6 +8,7 @@ import type { IposPaysConfig } from "../../config/ipospays.config.js";
 import {
   assertTransactionReference,
   createTransactionReference,
+  readAccessDenial,
   toMinorAmount,
 } from "./ipospays.util.js";
 
@@ -55,11 +56,39 @@ export class IposPaysClient {
   }
 
   async authenticate(force = false): Promise<IposAuthResult> {
+    const config = this.settings();
     const token = await this.token(force);
+    const url = new URL(config.paymentStatusUrl);
+    url.searchParams.set("tpn", config.tpn);
+    url.searchParams.set("transactionReferenceId", "PROBE0001");
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: { token },
+      signal: AbortSignal.timeout(20_000),
+    });
+    const payload = await this.parseJson(response);
+    const denial = readAccessDenial(payload);
+    if (
+      denial
+      || response.status === 401
+      || response.status === 403
+      || response.status >= 500
+    ) {
+      return {
+        responseCode: denial?.responseCode ?? String(response.status),
+        responseMessage:
+          denial?.responseMessage
+          || messageField(payload)
+          || "iPOSpays rejected these credentials for payments",
+        authenticated: false,
+      };
+    }
+
     return {
       responseCode: "00",
       responseMessage: "Success",
-      authenticated: token.length > 0,
+      authenticated: true,
     };
   }
 
@@ -76,7 +105,7 @@ export class IposPaysClient {
 
     const body = {
       merchantAuthentication: {
-        merchantId: config.tpn,
+        merchantId: merchantId(config.tpn),
         transactionReferenceId,
       },
       transactionRequest: {
@@ -159,6 +188,7 @@ export class IposPaysClient {
       {
         apiKey: config.apiKey,
         secretKey: config.secretKey,
+        scope: config.scope,
         TokenExpiryMinutes: String(config.tokenExpiryMinutes),
       },
     );
@@ -192,16 +222,18 @@ export class IposPaysClient {
     return this.readPayload(response);
   }
 
-  private async readPayload(response: Response): Promise<Record<string, unknown>> {
+  private async parseJson(response: Response): Promise<unknown> {
     const text = await response.text();
-    let payload: unknown = {};
-    if (text) {
-      try {
-        payload = JSON.parse(text) as unknown;
-      } catch {
-        throw new BadGatewayException("iPOSpays returned a non-JSON response");
-      }
+    if (!text) return {};
+    try {
+      return JSON.parse(text) as unknown;
+    } catch {
+      throw new BadGatewayException("iPOSpays returned a non-JSON response");
     }
+  }
+
+  private async readPayload(response: Response): Promise<Record<string, unknown>> {
+    const payload = await this.parseJson(response);
     if (!response.ok) {
       throw new BadGatewayException(
         messageField(payload) || `iPOSpays request failed (${response.status})`,
@@ -212,6 +244,11 @@ export class IposPaysClient {
     }
     return payload as Record<string, unknown>;
   }
+}
+
+function merchantId(tpn: string): number | string {
+  if (/^\d{12}$/.test(tpn)) return Number(tpn);
+  return tpn;
 }
 
 function stringField(payload: unknown, key: string): string {
@@ -232,6 +269,12 @@ function messageField(payload: unknown): string {
   if (!Array.isArray(errors) || errors.length === 0) return "";
   const first = errors[0];
   if (!first || typeof first !== "object") return "";
-  const message = (first as Record<string, unknown>).message;
-  return typeof message === "string" ? message : "";
+  const record = first as Record<string, unknown>;
+  const field = typeof record.field === "string" ? record.field : "";
+  const message = typeof record.message === "string" ? record.message : "";
+  if (field === "MTERR_009") {
+    return "This sandbox API user is not registered for PaymentTokenization. Enable that scope on the sandbox merchant key, then retry.";
+  }
+  if (field && message && field !== "DB Error") return `${field}: ${message}`;
+  return message;
 }
