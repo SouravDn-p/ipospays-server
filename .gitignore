@@ -1,0 +1,40 @@
+# dependencies
+node_modules/
+
+# build
+dist/
+build/
+*.tsbuildinfo
+vitest.config.e2e.js
+vitest.config.e2e.js.map
+vitest.config.e2e.d.ts
+
+# tests
+coverage/
+.nyc_output/
+
+# env and secrets
+.env
+.env.*
+!.env.example
+
+# logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.swp

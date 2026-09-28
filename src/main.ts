@@ -48,11 +48,13 @@ async function start() {
   app.setGlobalPrefix("api/v1");
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle("Nest Template API")
+    .setTitle("iPOSpays Server API")
     .setDescription(
       [
-        "All JSON bodies use a shared envelope: success (`success: true`) or error (`success: false`).",
-        "Auth uses httpOnly cookies. Mutating requests need header `x-csrf-token`.",
+        "iPOSpays server. Current routes: health, cookie auth, and users.",
+        "JSON uses one envelope: success (`success: true`) or error (`success: false`).",
+        "Auth uses httpOnly cookies (`access_token`, `refresh_token`). Refresh sends header `x-csrf-token` (from `data.csrfToken` or the `csrf_token` cookie).",
+        "Card payments are not exposed yet. Integrate the iPOSpays sandbox (UAT, *.ipospays.tech) first, then switch to production (*.ipospays.com) with IPOSPAYS_ENV. See docs/IPOSPAYS.md.",
       ].join("\n"),
     )
     .setVersion("1.0")
@@ -81,12 +83,12 @@ async function start() {
     swaggerOptions: {
       persistAuthorization: true,
     },
-    customSiteTitle: "Nest Template API",
+    customSiteTitle: "iPOSpays Server API",
   });
 
-  const port = configService.get<string>("app.port") || 5000;
+  const port = configService.get<number>("app.port") || 7000;
   await app.listen(port);
-  console.log(`Nest Template API: http://localhost:${port}/api/v1`);
-  console.log(`Swagger docs:      http://localhost:${port}/api/docs`);
+  console.log(`iPOSpays Server API: http://localhost:${port}/api/v1`);
+  console.log(`Swagger docs:        http://localhost:${port}/api/docs`);
 }
 await start();

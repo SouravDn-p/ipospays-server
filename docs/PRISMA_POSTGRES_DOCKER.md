@@ -1,6 +1,8 @@
 # Prisma + PostgreSQL + Docker Compose Setup
 
-This document describes how **Serv-server** connects NestJS to PostgreSQL using **Prisma ORM 7**, and how that database is run with **Docker Compose**.
+> **Current setup (28 Sep 2026).** This file was written for an earlier Serv-server layout. Use [../README.md](../README.md) for the live workflow. Today: database `nest_template`, user `postgres`, host port **5433** (container port 5432), Compose API publish **5001→5000** (set `PORT=5000`). The sections below still mention `serv` and `Serv-server` paths.
+
+This document describes how the API connects NestJS to PostgreSQL using **Prisma ORM 7**, and how that database is run with **Docker Compose**.
 
 ---
 

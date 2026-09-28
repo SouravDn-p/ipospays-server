@@ -1,7 +1,7 @@
 {
-  "name": "nest-template",
+  "name": "ipospays-server",
   "version": "0.0.1",
-  "description": "Nest Template API",
+  "description": "iPOSpays server API. Sandbox payments first, then production.",
   "author": "",
   "private": true,
   "license": "UNLICENSED",

@@ -18,7 +18,7 @@ describe("AppController", () => {
     it("should return a success payload", () => {
       const result = appController.getHello();
       expect(result.success).toBe(true);
-      expect(result.data).toEqual({ greeting: "Welcome to Nest Template" });
+      expect(result.data).toEqual({ greeting: "Welcome to iPOSpays Server" });
     });
   });
 });

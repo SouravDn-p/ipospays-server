@@ -7,7 +7,7 @@ COMPOSE ?= docker compose
 IMAGE ?= nest-template:latest
 
 help:
-	@echo "Nest Template"
+	@echo "iPOSpays Server"
 	@echo ""
 	@echo "  Local"
 	@echo "    make install          npm ci"
