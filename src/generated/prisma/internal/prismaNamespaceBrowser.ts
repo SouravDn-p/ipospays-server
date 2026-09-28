@@ -51,13 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
-  Session: 'Session',
-  AuditLog: 'AuditLog',
-  Plan: 'Plan',
-  Subscription: 'Subscription',
-  SubscriptionHistory: 'SubscriptionHistory',
-  Tenant: 'Tenant'
+  User: 'User'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -94,114 +88,12 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const SessionScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  refreshTokenHash: 'refreshTokenHash',
-  userAgent: 'userAgent',
-  ip: 'ip',
-  revokedAt: 'revokedAt',
-  expiresAt: 'expiresAt',
-  createdAt: 'createdAt'
-} as const
-
-export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
-
-
-export const AuditLogScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  action: 'action',
-  targetType: 'targetType',
-  targetId: 'targetId',
-  metadata: 'metadata',
-  createdAt: 'createdAt'
-} as const
-
-export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
-
-
-export const PlanScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  description: 'description',
-  priceMonthly: 'priceMonthly',
-  priceYearly: 'priceYearly',
-  maxLocations: 'maxLocations',
-  maxStaffPerLocation: 'maxStaffPerLocation',
-  allowedRoles: 'allowedRoles',
-  features: 'features',
-  isActive: 'isActive',
-  isPublic: 'isPublic',
-  sortOrder: 'sortOrder',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type PlanScalarFieldEnum = (typeof PlanScalarFieldEnum)[keyof typeof PlanScalarFieldEnum]
-
-
-export const SubscriptionScalarFieldEnum = {
-  id: 'id',
-  tenantId: 'tenantId',
-  planId: 'planId',
-  status: 'status',
-  trialEndsAt: 'trialEndsAt',
-  currentPeriodEnd: 'currentPeriodEnd',
-  canceledAt: 'canceledAt',
-  stripeCustomerId: 'stripeCustomerId',
-  stripeSubId: 'stripeSubId'
-} as const
-
-export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
-
-
-export const SubscriptionHistoryScalarFieldEnum = {
-  id: 'id',
-  subscriptionId: 'subscriptionId',
-  fromPlanId: 'fromPlanId',
-  toPlanId: 'toPlanId',
-  changedById: 'changedById',
-  reason: 'reason',
-  createdAt: 'createdAt'
-} as const
-
-export type SubscriptionHistoryScalarFieldEnum = (typeof SubscriptionHistoryScalarFieldEnum)[keyof typeof SubscriptionHistoryScalarFieldEnum]
-
-
-export const TenantScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  slug: 'slug',
-  status: 'status',
-  createdAt: 'createdAt'
-} as const
-
-export type TenantScalarFieldEnum = (typeof TenantScalarFieldEnum)[keyof typeof TenantScalarFieldEnum]
-
-
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const NullableJsonNullValueInput = {
-  DbNull: DbNull,
-  JsonNull: JsonNull
-} as const
-
-export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -218,13 +110,4 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
-export const JsonNullValueFilter = {
-  DbNull: DbNull,
-  JsonNull: JsonNull,
-  AnyNull: AnyNull
-} as const
-
-export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

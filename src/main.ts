@@ -51,10 +51,10 @@ async function start() {
     .setTitle("iPOSpays Server API")
     .setDescription(
       [
-        "iPOSpays server. Current routes: health, cookie auth, and users.",
+        "iPOSpays server. Routes: health, cookie auth, users, and sandbox payments.",
         "JSON uses one envelope: success (`success: true`) or error (`success: false`).",
         "Auth uses httpOnly cookies (`access_token`, `refresh_token`). Refresh sends header `x-csrf-token` (from `data.csrfToken` or the `csrf_token` cookie).",
-        "Card payments are not exposed yet. Integrate the iPOSpays sandbox (UAT, *.ipospays.tech) first, then switch to production (*.ipospays.com) with IPOSPAYS_ENV. See docs/IPOSPAYS.md.",
+        "Payments call iPOSpays sandbox (*.ipospays.tech) while IPOSPAYS_ENV=sandbox. Production hosts (*.ipospays.com) are used only when IPOSPAYS_ENV=production. GET /payments/ipospays/connection checks the key pair and does not return the token.",
       ].join("\n"),
     )
     .setVersion("1.0")

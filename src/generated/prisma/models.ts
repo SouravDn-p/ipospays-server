@@ -9,10 +9,4 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js'
-export type * from './models/Session.js'
-export type * from './models/AuditLog.js'
-export type * from './models/Plan.js'
-export type * from './models/Subscription.js'
-export type * from './models/SubscriptionHistory.js'
-export type * from './models/Tenant.js'
 export type * from './commonInputTypes.js'

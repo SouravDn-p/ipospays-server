@@ -1,6 +1,6 @@
 # iPOSpays payments — sandbox, then production
 
-**Status:** not called from this API yet. Use this guide when wiring the payment client.
+**Status:** the API calls iPOSpays. `IPOSPAYS_ENV=sandbox` uses `*.ipospays.tech`. Production hosts are selected only when `IPOSPAYS_ENV=production`.
 
 Start on the **sandbox (UAT)**. Production credentials and `*.ipospays.com` hosts stay unused until a sandbox payment can be created, queried, and refunded or voided.
 
@@ -12,6 +12,16 @@ Official references:
 - Sandbox portal docs: [HPP](https://uatdocs.ipospays.tech/hosted-payment-page/apidocs), [Transact](https://uatdocs.ipospays.tech/ipos-transact/apidocs)
 
 ---
+
+## Routes on this API
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET` | `/api/v1/payments/ipospays/connection` | Exchange the API key and secret for a sandbox token. The token stays on the server. |
+| `POST` | `/api/v1/payments/hosted-page` | Create a Hosted Payment Page URL. Body `amount` is USD (`10.50` is sent as `1050`). Needs the access cookie and `x-csrf-token`. |
+| `GET` | `/api/v1/payments/status/:transactionReferenceId` | Pull status for that reference. Needs the access cookie. |
+
+The TPN is sent as `merchantId` on the hosted page and as `tpn` on the status query. It is not sent when requesting the auth token.
 
 ## What this server should do
 

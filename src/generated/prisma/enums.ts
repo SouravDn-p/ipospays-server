@@ -11,50 +11,7 @@
 
 export const Role = {
   SUPER_ADMIN: 'SUPER_ADMIN',
-  BILLING_ADMIN: 'BILLING_ADMIN',
-  SUPPORT_ADMIN: 'SUPPORT_ADMIN',
-  OWNER: 'OWNER',
-  MANAGER: 'MANAGER',
-  STAFF: 'STAFF',
-  SERVER: 'SERVER',
-  CHEF: 'CHEF',
-  CASHIER: 'CASHIER',
-  RUNNER: 'RUNNER',
-  BARTENDER: 'BARTENDER'
+  USER: 'USER'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]
-
-
-export const RoleName = {
-  OWNER: 'OWNER',
-  MANAGER: 'MANAGER',
-  STAFF: 'STAFF',
-  SERVER: 'SERVER',
-  CHEF: 'CHEF',
-  CASHIER: 'CASHIER',
-  RUNNER: 'RUNNER',
-  BARTENDER: 'BARTENDER'
-} as const
-
-export type RoleName = (typeof RoleName)[keyof typeof RoleName]
-
-
-export const TenantStatus = {
-  ACTIVE: 'ACTIVE',
-  SUSPENDED: 'SUSPENDED',
-  TRIAL: 'TRIAL'
-} as const
-
-export type TenantStatus = (typeof TenantStatus)[keyof typeof TenantStatus]
-
-
-export const SubStatus = {
-  TRIALING: 'TRIALING',
-  ACTIVE: 'ACTIVE',
-  PAST_DUE: 'PAST_DUE',
-  SUSPENDED: 'SUSPENDED',
-  CANCELED: 'CANCELED'
-} as const
-
-export type SubStatus = (typeof SubStatus)[keyof typeof SubStatus]

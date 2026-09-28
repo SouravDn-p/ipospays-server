@@ -1,5 +1,5 @@
 .PHONY: help install lint format test test-watch test-cov test-e2e \
-	prisma-generate prisma-migrate prisma-deploy prisma-studio \
+	prisma-generate prisma-migrate prisma-deploy prisma-seed prisma-studio \
 	build start start-dev start\:dev start-debug start-prod \
 	docker-build up run run-build down logs logs-f db-up db-down ps clean ci
 
@@ -24,6 +24,7 @@ help:
 	@echo "    make prisma-generate"
 	@echo "    make prisma-migrate"
 	@echo "    make prisma-deploy"
+	@echo "    make prisma-seed      seed user and admin from SEED_* env"
 	@echo "    make prisma-studio"
 	@echo ""
 	@echo "  Docker"
@@ -66,6 +67,9 @@ prisma-migrate:
 
 prisma-deploy:
 	npm run prisma:deploy
+
+prisma-seed:
+	npm run prisma:seed
 
 prisma-studio:
 	npm run prisma:studio

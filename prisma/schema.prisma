@@ -10,49 +10,16 @@ datasource db {
 
 enum Role {
   SUPER_ADMIN
-  BILLING_ADMIN
-  SUPPORT_ADMIN
-  OWNER
-  MANAGER
-  STAFF
-  SERVER
-  CHEF
-  CASHIER
-  RUNNER
-  BARTENDER
+  USER
 }
 
-enum RoleName {
-  OWNER
-  MANAGER
-  STAFF
-  SERVER
-  CHEF
-  CASHIER
-  RUNNER
-  BARTENDER
-}
-
-enum TenantStatus {
-  ACTIVE
-  SUSPENDED
-  TRIAL
-}
-
-enum SubStatus {
-  TRIALING
-  ACTIVE
-  PAST_DUE
-  SUSPENDED
-  CANCELED
-}
 
 model User {
   id                  String    @id @default(uuid())
   name                String
   email               String    @unique
   password            String
-  role                Role      @default(STAFF)
+  role                Role      @default(USER)
   isActive            Boolean   @default(true)
   failedLoginAttempts Int       @default(0)
   lockedUntil         DateTime?
@@ -61,95 +28,7 @@ model User {
   updatedAt           DateTime  @updatedAt
   deletedAt           DateTime?
 
-  sessions  Session[]
-  auditLogs AuditLog[]
-
-  @@index([email])
-  @@map("users")
 }
 
-model Session {
-  id               String    @id @default(uuid())
-  userId           String
-  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  refreshTokenHash String
-  userAgent        String?
-  ip               String?
-  revokedAt        DateTime?
-  expiresAt        DateTime
-  createdAt        DateTime  @default(now())
 
-  @@index([userId])
-  @@map("sessions")
-}
 
-model AuditLog {
-  id         String   @id @default(cuid())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
-  action     String
-  targetType String
-  targetId   String
-  metadata   Json?
-  createdAt  DateTime @default(now())
-
-  @@index([targetType, targetId])
-  @@map("audit_logs")
-}
-
-model Plan {
-  id                  String     @id @default(cuid())
-  name                String
-  slug                String     @unique
-  description         String?
-  priceMonthly        Decimal
-  priceYearly         Decimal?
-  maxLocations        Int
-  maxStaffPerLocation Int
-  allowedRoles        RoleName[]
-  features            Json
-  isActive            Boolean    @default(true)
-  isPublic            Boolean    @default(true)
-  sortOrder           Int        @default(0)
-  createdAt           DateTime   @default(now())
-  updatedAt           DateTime   @updatedAt
-
-  subscriptions Subscription[]
-}
-
-model Subscription {
-  id               String    @id @default(cuid())
-  tenantId         String    @unique
-  tenant           Tenant    @relation(fields: [tenantId], references: [id])
-  planId           String
-  plan             Plan      @relation(fields: [planId], references: [id])
-  status           SubStatus @default(TRIALING)
-  trialEndsAt      DateTime?
-  currentPeriodEnd DateTime?
-  canceledAt       DateTime?
-  stripeCustomerId String?
-  stripeSubId      String?
-
-  history SubscriptionHistory[]
-}
-
-model SubscriptionHistory {
-  id             String       @id @default(cuid())
-  subscriptionId String
-  subscription   Subscription @relation(fields: [subscriptionId], references: [id])
-  fromPlanId     String?
-  toPlanId       String
-  changedById    String?
-  reason         String?
-  createdAt      DateTime     @default(now())
-}
-
-model Tenant {
-  id        String       @id @default(cuid())
-  name      String
-  slug      String       @unique
-  status    TenantStatus @default(ACTIVE)
-  createdAt DateTime     @default(now())
-
-  subscription Subscription?
-}

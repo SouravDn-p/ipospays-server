@@ -7,18 +7,20 @@ import { AppService } from "./app.service.js";
 import appConfig from "./config/app.config.js";
 import cloudinaryConfig from "./config/cloudinary.config.js";
 import dbConfig from "./config/db.config.js";
+import ipospaysConfig from "./config/ipospays.config.js";
 import jwtConfig from "./config/jwt.config.js";
 import { PrismaModule } from "./services/prisma/prisma.module.js";
 import { AuthModule } from "./modules/auth/auth.module.js";
 import { UsersModule } from "./modules/users/users.module.js";
 import { PlansModule } from "./modules/admin/plans/plans.module.js";
+import { PaymentsModule } from "./modules/payments/payments.module.js";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ".env",
-      load: [appConfig, dbConfig, cloudinaryConfig, jwtConfig],
+      load: [appConfig, dbConfig, cloudinaryConfig, jwtConfig, ipospaysConfig],
     }),
     ThrottlerModule.forRoot([
       {
@@ -30,6 +32,7 @@ import { PlansModule } from "./modules/admin/plans/plans.module.js";
     AuthModule,
     UsersModule,
     PlansModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [

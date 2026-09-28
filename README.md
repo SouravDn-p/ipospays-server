@@ -63,6 +63,14 @@ make run-build
 
 Stop with `make down`. Follow logs with `make logs`.
 
+Seed the first user and admin after `SEED_USER_*` and `SEED_ADMIN_*` are set in `.env`:
+
+```bash
+make prisma-seed
+```
+
+The user row is `USER`. The admin row is `SUPER_ADMIN`. Running the seed again updates those two emails and passwords.
+
 ---
 
 ## API surface
@@ -74,11 +82,10 @@ Global prefix: `/api/v1`. JSON uses one envelope: `success: true` with `data`, o
 | Health | `GET /` | Public |
 | Auth | `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout` | Login is public. Refresh needs the refresh cookie and `x-csrf-token`. Logout needs the access cookie. |
 | Users | `GET /users/me`, `GET /users`, `POST /users`, `GET /users/:id/audit-logs`, `PATCH /users/:id/deactivate` | Access cookie. List, create, audit logs, and deactivate require `SUPER_ADMIN`. |
+| Payments | `GET /payments/ipospays/connection`, `POST /payments/hosted-page`, `GET /payments/status/:transactionReferenceId` | Connection is public. Creating a page and reading status need the access cookie and, for POST, `x-csrf-token`. |
 | Plans | `plans` controller is registered and has no routes yet | — |
 
-Auth details: [docs/auth.md](docs/auth.md).
-
-Payment routes are not exposed yet. The next integration step is the iPOSpays sandbox, described in [docs/IPOSPAYS.md](docs/IPOSPAYS.md).
+Auth details: [docs/auth.md](docs/auth.md). Payment hosts and the sandbox-to-production switch: [docs/IPOSPAYS.md](docs/IPOSPAYS.md).
 
 ---
 
@@ -118,6 +125,8 @@ iPOSpays keys in `.env.example` are commented. Fill the sandbox values before pa
 | `NODE_ENV` | `development` locally. Production refuses weak JWT secrets. |
 | `CORS_ORIGINS` | Comma-separated browser origins. |
 | `DATABASE_URL` | Postgres connection string. |
+| `SEED_USER_EMAIL` / `SEED_USER_PASSWORD` | Regular user (`USER`) created by `make prisma-seed`. |
+| `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` | Admin (`SUPER_ADMIN`) created by the same seed. |
 | `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET` | Required in production. Dev fallbacks exist only outside production. |
 | `JWT_ACCESS_EXPIRES_IN` / `JWT_REFRESH_EXPIRES_IN` | Defaults `15m` and `7d`. |
 | `IPOSPAYS_ENV` | `sandbox` while testing, `production` after sign-off. |

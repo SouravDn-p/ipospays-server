@@ -22,33 +22,3 @@ export * from './enums.js';
  * 
  */
 export type User = Prisma.UserModel
-/**
- * Model Session
- * 
- */
-export type Session = Prisma.SessionModel
-/**
- * Model AuditLog
- * 
- */
-export type AuditLog = Prisma.AuditLogModel
-/**
- * Model Plan
- * 
- */
-export type Plan = Prisma.PlanModel
-/**
- * Model Subscription
- * 
- */
-export type Subscription = Prisma.SubscriptionModel
-/**
- * Model SubscriptionHistory
- * 
- */
-export type SubscriptionHistory = Prisma.SubscriptionHistoryModel
-/**
- * Model Tenant
- * 
- */
-export type Tenant = Prisma.TenantModel
