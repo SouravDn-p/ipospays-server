@@ -14,6 +14,7 @@ export interface IposPaysConfig extends IposPaysHosts {
   secretKey: string;
   tpn: string;
   tokenExpiryMinutes: number;
+  scope: string;
 }
 
 const HOSTS: Record<IposPaysEnvironment, IposPaysHosts> = {
@@ -65,6 +66,7 @@ export default registerAs<IposPaysConfig>("ipospays", (): IposPaysConfig => {
     tokenExpiryMinutes: parseTokenExpiryMinutes(
       process.env.IPOSPAYS_TOKEN_EXPIRY_MINUTES,
     ),
+    scope: process.env.IPOSPAYS_SCOPE?.trim() || "PaymentTokenization",
     ...hostsFor(env),
   };
 });
