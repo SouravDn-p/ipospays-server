@@ -75,7 +75,7 @@ curl -X POST 'https://auth.ipospays.tech/v1/authenticate-token' \
   -H 'TokenExpiryMinutes: 30'
 ```
 
-- Headers, not a JSON body: `apiKey`, `secretKey`, optional `TokenExpiryMinutes`.
+- Headers, not a JSON body: `apiKey`, `secretKey`, `scope` (`PaymentTokenization` for hosted payments and Transact), optional `TokenExpiryMinutes`.
 - Expiry is an integer from **30** to **1440** minutes (24 hours).
 - `200` with `responseCode` `00` returns `token`. Send that token on later calls the way the chosen API doc specifies.
 - Merchant scope for payments is `PaymentTokenization` (Transact v3 and transaction status). Do not request scopes the key was not issued for.
